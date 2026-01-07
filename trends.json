@@ -1,20 +1,20 @@
 {
   "KR": [
     {
-      "id": "hot-memes",
+      "id": "hot-meme",
       "name": "지금 뜨는 밈",
       "top": [
-        { "title": "가슴에 국밥 밈", "link": "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }
+        { "title": "가슴에 국밥 밈", "link": "https://www.youtube.com" }
       ],
       "list": [
-        { "title": "2026 신년 말뽑기 테스트", "link": "https://poomang.com" },
-        { "title": "마라탕 대신 쌍화탕 챌린지", "link": "https://www.tiktok.com" }
+        { "title": "2026 신년 말뽑기", "link": "https://poomang.com" },
+        { "title": "쌍화탕 챌린지", "link": "https://www.tiktok.com" }
       ]
     }
   ],
   "US": [
     {
-      "id": "us-trends",
+      "id": "us-viral",
       "name": "US Viral",
       "top": [
         { "title": "Lush Life 2016 Retro", "link": "https://www.youtube.com" }
