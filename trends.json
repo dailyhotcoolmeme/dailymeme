@@ -1,0 +1,64 @@
+{
+  "KR": [
+    {
+      "id": "hot",
+      "name": "지금 핫클립",
+      "top": [
+        {
+          "title": "흑백요리사: 최종 우승자 하이라이트",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHlxMHFxZHBxZHBxZHBxZHBxZHBxZHBxZHBxZHBxZHBxZHBxJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/EatwJZRUIv41G/giphy.gif",
+          "link": "https://www.youtube.com/watch?v=R9_mS9fK_3M"
+        }
+      ],
+      "list": [
+        {
+          "title": "SNL 코리아 지예은 모음",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3omZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKVUn7XYMhxuQs8/giphy.gif",
+          "link": "https://www.youtube.com/watch?v=T_8N3O0qO8c"
+        },
+        {
+          "title": "침착맨: 제로 음료 블라인드 테스트",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3omZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/EatwJZRUIv41G/giphy.gif",
+          "link": "https://www.youtube.com/watch?v=rWlC6X1XpAg"
+        }
+      ]
+    },
+    {
+      "id": "music",
+      "name": "급상승 음악",
+      "top": [
+        {
+          "title": "로제 & 브루노 마스: APT.",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZhcHhqM3ZhcHhqM3ZhcHhqM3ZhcHhqM3ZhcHhqM3ZhcHhqM3ZhcHhqJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/l0HlSzhq6C075253G/giphy.gif",
+          "link": "https://www.youtube.com/watch?v=ekr2nIex040"
+        }
+      ],
+      "list": [
+        {
+          "title": "지코: SPOT! (feat. JENNIE)",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3omZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKVUn7XYMhxuQs8/giphy.gif",
+          "link": "https://www.youtube.com/watch?v=fV63mY9uI60"
+        }
+      ]
+    },
+    {
+      "id": "challenge",
+      "name": "인기 챌린지",
+      "top": [
+        {
+          "title": "삐끼삐끼 챌린지 하이라이트",
+          "preview": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3V6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3p6YnBzZ3omZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/3o7TKub7X6jMvA7lTy/giphy.gif",
+          "link": "https://www.youtube.com/shorts/W0Z_y_l_vV0"
+        }
+      ],
+      "list": []
+    }
+  ],
+  "US": [],
+  "JP": [],
+  "GLOBAL": [],
+  "FR": [],
+  "DE": [],
+  "BR": [],
+  "ID": []
+}
