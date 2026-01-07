@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>지금밈 - 글로벌 유행 트렌드</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #ffffff;
+      color: #0f172a;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+      margin: 0;
+      font-style: normal !important;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .select-none { -webkit-user-select: none; user-select: none; }
+    * { font-style: normal !important; }
+    .meme-card-wrapper { will-change: transform, opacity; }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0/client"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="module">
+    import React, { useState, useEffect, useCallback, useMemo, useRef, useLayoutEffect } from 'react';
+    import ReactDOM from 'react-dom';
+
+    const COUNTRIES = [
+      { code: 'KR', label: '한국', flag: '🇰🇷' },
+      { code: 'US', label: '미국', flag: '🇺🇸' },
+      { code: 'JP', label: '일본', flag: '🇯🇵' },
+      { code: 'FR', label: '프랑스', flag: '🇫🇷' },
+      { code: 'DE', label: '독일', flag: '🇩🇪' },
+      { code: 'BR', label: '브라질', flag: '🇧🇷' },
+      { code: 'ID', label: '인도네시아', flag: '🇮🇩' },
+      { code: 'GLOBAL', label: '글로벌', flag: '🌐' },
+    ];
+
+    const COUNTRY_NAME_MAP = {
+      KR: { KR: '한국', US: '미국', JP: '일본', FR: '프랑스', DE: '독일', BR: '브라질', ID: '인도네시아', GLOBAL: '글로벌' },
+      US: { KR: 'South Korea', US: 'USA', JP: 'Japan', FR: 'France', DE: 'Germany', BR: 'Brazil', ID: 'Indonesia', GLOBAL: 'Global' }
+    };
+
+    // --- Components ---
+
+    const SkeletonLoader = () => (
+      <div className="p-4 space-y-10 animate-pulse overflow-hidden">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="space-y-4">
+            <div className="h-5 w-32 bg-gray-200 rounded-full mx-6"></div>
+            <div className="flex gap-3 justify-center">
+              <div className="flex-shrink-0 w-32 h-48 bg-gray-100 rounded-2xl"></div>
+              <div className="flex-shrink-0 w-32 h-48 bg-gray-200 rounded-2xl scale-110 shadow-sm"></div>
+              <div className="flex-shrink-0 w-32 h-48 bg-gray-100 rounded-2xl"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+
+    const MemeCard = ({ item, isTop, isFocused, onOpenLink }) => {
+      const [imgError, setImgError] = useState(false);
+      const youtubeId = useMemo(() => {
+        const match = item.link.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+        return match ? match[1] : null;
+      }, [item.link]);
+
+      const thumb = useMemo(() => {
+        if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+        return item.thumb || `https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400`;
+      }, [youtubeId, item.thumb]);
+
+      return (
+        <div className="relative" style={{ width: '130px', height: '184px' }}>
+          <button 
+            onClick={() => onOpenLink(item.link)}
+            className="block w-full h-full text-left outline-none transition-all duration-500 ease-[cubic-bezier(0.18,0.89,0.32,1.28)]"
+            style={{
+              transform: isFocused ? 'scale(1.1) translateY(-8px)' : 'scale(0.92)',
+              opacity: isFocused ? 1 : 0.45,
+              zIndex: isFocused ? 50 : 10
+            }}
+          >
+            <div className={`relative w-full h-full rounded-2xl overflow-hidden bg-slate-200 ${isFocused ? 'shadow-2xl' : 'shadow-md'}`}>
+              <img 
+                src={imgError ? 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=400' : thumb} 
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isFocused && item.preview ? 'opacity-0' : 'opacity-100'}`}
+                onError={() => setImgError(true)}
+              />
+              {item.preview && isFocused && (
+                <img src={item.preview} className="absolute inset-0 w-full h-full object-cover" />
+              )}
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              <div className="absolute inset-0 p-3 flex flex-col justify-end">
+                {isTop && (
+                  <span className="absolute top-2.5 left-2.5 bg-yellow-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded-[4px] border border-black/10">TOP</span>
+                )}
+                <h3 className="text-white font-bold text-[10px] leading-tight line-clamp-2">{item.title}</h3>
+              </div>
+              <div className="absolute top-2.5 right-2.5">
+                {isFocused && item.preview && (
+                  <div className="bg-red-600 flex items-center gap-1 px-1.5 py-0.5 rounded-[4px] border border-red-400/30">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                    <span className="text-[9px] text-white font-black uppercase">PREVIEW</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </button>
+        </div>
+      );
+    };
+
+    const MemeSection = ({ category, onOpenLink }) => {
+      const scrollRef = useRef(null);
+      const [activeIndex, setActiveIndex] = useState(0);
+      const isJumping = useRef(false);
+      const CARD_WIDTH = 130;
+      const GAP = 12;
+      const ITEM_FULL_WIDTH = CARD_WIDTH + GAP;
+
+      const items = useMemo(() => {
+        const raw = [...(category.top || []), ...(category.list || [])];
+        let base = [...raw];
+        while (base.length < 10) base = [...base, ...raw];
+        return [...base, ...base, ...base]; // 3 sets for infinite loop
+      }, [category]);
+
+      const oneSetCount = items.length / 3;
+
+      useLayoutEffect(() => {
+        const el = scrollRef.current;
+        if (el && items.length > 0) {
+          const init = () => {
+            const containerWidth = el.offsetWidth;
+            if (containerWidth === 0) { requestAnimationFrame(init); return; }
+            const oneSetWidth = oneSetCount * ITEM_FULL_WIDTH;
+            const offset = oneSetWidth - (containerWidth / 2) + (CARD_WIDTH / 2);
+            el.scrollLeft = offset;
+            setActiveIndex(oneSetCount);
+          };
+          init();
+        }
+      }, [category.name, items.length]);
+
+      const handleScroll = useCallback(() => {
+        const el = scrollRef.current;
+        if (!el || isJumping.current) return;
+        const scrollLeft = el.scrollLeft;
+        const oneSetWidth = oneSetCount * ITEM_FULL_WIDTH;
+
+        if (scrollLeft < oneSetWidth * 0.5) {
+          isJumping.current = true;
+          el.scrollLeft = scrollLeft + oneSetWidth;
+          isJumping.current = false;
+        } else if (scrollLeft > oneSetWidth * 2.2) {
+          isJumping.current = true;
+          el.scrollLeft = scrollLeft - oneSetWidth;
+          isJumping.current = false;
+        }
+
+        const center = el.getBoundingClientRect().left + el.offsetWidth / 2;
+        const cards = el.querySelectorAll('.meme-card-wrapper');
+        let closestIdx = 0;
+        let minDistance = Infinity;
+        cards.forEach((card, i) => {
+          const rect = card.getBoundingClientRect();
+          const dist = Math.abs(center - (rect.left + rect.width / 2));
+          if (dist < minDistance) { minDistance = dist; closestIdx = i; }
+        });
+        setActiveIndex(closestIdx);
+      }, [oneSetCount]);
+
+      return (
+        <section className="py-10 first:pt-6 overflow-hidden">
+          <div className="px-5 mb-1 flex items-end justify-between">
+            <div className="flex flex-col">
+              <div className="flex items-baseline gap-2">
+                <h2 className="text-xl font-black text-slate-900 tracking-tighter leading-none">{category.name}</h2>
+              </div>
+              <div className="w-10 h-1.5 bg-indigo-500 rounded-full mt-2"></div>
+            </div>
+          </div>
+          <div 
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="meme-scroll-container flex gap-3 overflow-x-auto no-scrollbar py-10 snap-x snap-mandatory"
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {items.map((item, idx) => (
+              <div key={idx} className="meme-card-wrapper flex-none snap-center">
+                <MemeCard 
+                  item={item} 
+                  isTop={(idx % (category.top.length + category.list.length)) < category.top.length}
+                  isFocused={idx === activeIndex}
+                  onOpenLink={onOpenLink}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    };
+
+    // --- Main App ---
+
+    const App = () => {
+      const [activeCountry, setActiveCountry] = useState('KR');
+      const [allData, setAllData] = useState({});
+      const [loading, setLoading] = useState(true);
+      const [isAnimating, setIsAnimating] = useState(false);
+
+      useEffect(() => {
+        fetch('./trends.json')
+          .then(res => res.json())
+          .then(data => {
+            setAllData(data);
+            setLoading(false);
+          })
+          .catch(err => console.error(err));
+      }, []);
+
+      const currentCategories = useMemo(() => {
+        if (!allData[activeCountry]) return [];
+        // KR 탭이 아닐 경우 '해외 반응' 제외 필터링
+        return allData[activeCountry].filter(cat => activeCountry === 'KR' || cat.id !== 'reactions');
+      }, [allData, activeCountry]);
+
+      const handleCountryChange = (code) => {
+        if (code === activeCountry) return;
+        setIsAnimating(true);
+        setActiveCountry(code);
+        window.scrollTo({ top: 0 });
+        setTimeout(() => setIsAnimating(false), 300);
+      };
+
+      return (
+        <div className="min-h-screen bg-white select-none">
+          <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+            <div className="px-5 pt-5 pb-6 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="bg-indigo-600 w-6 h-6 rounded flex items-center justify-center">
+                  <span className="text-white font-black text-[10px]">M</span>
+                </div>
+                <h1 className="text-xl font-black tracking-tighter text-slate-900 leading-none">지금밈</h1>
+              </div>
+              <div className="text-[10px] font-black text-indigo-500 tracking-tighter px-2.5 py-1 rounded-full bg-indigo-50 uppercase">
+                {COUNTRY_NAME_MAP['KR'][activeCountry]}
+              </div>
+            </div>
+            <nav className="px-5 pb-5 flex justify-between items-center w-full overflow-x-auto no-scrollbar gap-2">
+              {COUNTRIES.map((c) => (
+                <button 
+                  key={c.code} 
+                  onClick={() => handleCountryChange(c.code)} 
+                  className={`flex-none flex flex-col items-center transition-all duration-300 ${activeCountry === c.code ? 'scale-110 opacity-100' : 'opacity-30 scale-90'}`}
+                >
+                  <span className="text-3xl leading-none">{c.flag}</span>
+                  <span className={`text-[8px] font-black mt-1 ${activeCountry === c.code ? 'text-indigo-600' : 'text-slate-400'}`}>{c.code}</span>
+                </button>
+              ))}
+            </nav>
+          </header>
+
+          <main className={`transition-all duration-300 transform ${isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+            {loading ? <SkeletonLoader /> : currentCategories.map((cat) => (
+              <MemeSection key={cat.id} category={cat} onOpenLink={(url) => window.open(url, '_blank')} />
+            ))}
+            <footer className="py-12 text-center border-t border-slate-50 mt-10">
+              <p className="text-[10px] text-slate-300 font-bold tracking-tighter uppercase leading-none">© 2026 Daily HotCool Meme. All Rights Reserved.</p>
+            </footer>
+          </main>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  </script>
+</body>
+</html>
